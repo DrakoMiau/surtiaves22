@@ -14,13 +14,14 @@ function Caja() {
               className="border-amber-500 border-solid border-1"
               onClick={() => setVista("registrar")}
             >
-              Registrar pedido
+              Registrar venta
             </li>
-            <li onClick={() => setVista("ver")}>Ver pedidos</li>
+            <li onClick={() => setVista("ver")}>Ver ventas</li>
           </ul>
         </nav>
         <section className="flex-1 p-6 bg-gray-500">
           {/*Aqui se tiene que mostrar el historico de ventas o el formulario de creacion de facturas*/}
+          {/*Recordar poner como estado inicial el nombre del cajer@ y su bienvenida*/}
           {vista === "registrar" && <p>Registro</p>}
           {vista === "ver" && <p>Historico</p>}
         </section>
