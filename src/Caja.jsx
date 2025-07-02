@@ -23,7 +23,18 @@ function Caja() {
           {/*Aqui se tiene que mostrar el historico de ventas o el formulario de creacion de facturas*/}
           {/*Recordar poner como estado inicial el nombre del cajer@ y su bienvenida*/}
           {vista === "registrar" && <p>Registro</p>}
-          {vista === "ver" && <p>Historico</p>}
+          {vista === "ver" && (
+            <div>
+              <form>
+                <button className="btn bg-blue-500 rounded-full hover:bg-blue-700 text-white py-2 px-4 font-bold">
+                  Modificar
+                </button>
+                <button className="btn bg-red-500 rounded-full hover:bg-red-800 text-white py-2 px-4 font-bold">
+                  Eliminar
+                </button>
+              </form>
+            </div>
+          )}
         </section>
       </div>
     </>
