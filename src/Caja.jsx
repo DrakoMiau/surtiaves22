@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Modificar from "./components/ventas/Modificar";
+import Registrar from "./components/ventas/Registrar";
 function Caja() {
   // Las funcionalidades que debe tener caja son de registrar venta
   // leer las ventas registradas
@@ -22,19 +24,8 @@ function Caja() {
         <section className="flex-1 p-6 bg-gray-500">
           {/*Aqui se tiene que mostrar el historico de ventas o el formulario de creacion de facturas*/}
           {/*Recordar poner como estado inicial el nombre del cajer@ y su bienvenida*/}
-          {vista === "registrar" && <p>Registro</p>}
-          {vista === "ver" && (
-            <div>
-              <form>
-                <button className="btn bg-blue-500 rounded-full hover:bg-blue-700 text-white py-2 px-4 font-bold">
-                  Modificar
-                </button>
-                <button className="btn bg-red-500 rounded-full hover:bg-red-800 text-white py-2 px-4 font-bold">
-                  Eliminar
-                </button>
-              </form>
-            </div>
-          )}
+          {vista === "registrar" && <Registrar />}
+          {vista === "ver" && <Modificar />}
         </section>
       </div>
     </>
