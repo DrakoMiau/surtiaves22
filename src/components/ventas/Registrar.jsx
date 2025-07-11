@@ -1,10 +1,12 @@
 import { useState } from "react";
 
 function Registrar() {
-  const [nombre, setNombre] = useState(""); // Guarda el valor del input
+  const [nombre, setNombre] = useState(""); // guardamos el nombre
+  const [fecha, setFecha] = useState("");
+  const [valor, setValor] = useState();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita recargar la página
+    e.preventDefault(); // es para evitar el comportamiento por default del navegador, asi no recarga la pagina cuando se ejecuta el submit
 
     try {
       const res = await fetch("http://localhost:3001/clientes", {
@@ -18,7 +20,7 @@ function Registrar() {
       const data = await res.json();
       console.log("Cliente creado:", data);
 
-      setNombre(""); // Limpia el input
+      setNombre(""); //
     } catch (error) {
       console.error("Error al crear cliente:", error);
     }
@@ -35,6 +37,10 @@ function Registrar() {
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
         />
+        <label htmlFor="fecha">Fecha</label>
+        <input type="date" id="fecha" className="bg-blue-50" value={fecha} />
+        <label htmlFor="">Valor</label>
+        <input type="number" id="nombreProducto" className="bg-blue-50" value={valor} />
         <input type="submit" value="Crear" className="m-1.5 bg-cyan-100" />
       </form>
     </>
