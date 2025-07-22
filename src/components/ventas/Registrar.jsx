@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 function Registrar() {
@@ -21,7 +20,6 @@ function Registrar() {
     e.preventDefault();
 
     try {
-      // Crear cliente
       const clienteRes = await fetch("http://localhost:3001/clientes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,8 +34,7 @@ function Registrar() {
       const clienteData = await clienteRes.json();
       const clienteId = clienteData.id;
 
-      // Crear pedido
-      const pedidoRes = await fetch("http://localhost:3001/pedidos", {
+      await fetch("http://localhost:3001/pedidos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -46,9 +43,6 @@ function Registrar() {
           estado,
         }),
       });
-
-      const pedidoData = await pedidoRes.json();
-      console.log("Pedido creado:", pedidoData);
 
       // Limpiar formulario
       setNombre("");
@@ -64,89 +58,99 @@ function Registrar() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 border rounded">
-      <div>
-        <label>Nombre:</label>
-        <input
-          type="text"
-          className="bg-blue-50 w-full p-1"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Apellido:</label>
-        <input
-          type="text"
-          className="bg-blue-50 w-full p-1"
-          value={apellido}
-          onChange={(e) => setApellido(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Teléfono:</label>
-        <input
-          type="tel"
-          className="bg-blue-50 w-full p-1"
-          value={telefono}
-          onChange={(e) => setTelefono(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Dirección:</label>
-        <input
-          type="text"
-          className="bg-blue-50 w-full p-1"
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Correo:</label>
-        <input
-          type="email"
-          className="bg-blue-50 w-full p-1"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Canal de venta:</label>
-        <select
-          className="bg-blue-50 w-full p-1"
-          value={canalVenta}
-          onChange={(e) => setCanalVenta(parseInt(e.target.value))}
-          required
+    <div className="bg-yellow-50 p-6 rounded-lg shadow-md max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold text-rose-600 mb-4">Registrar Pedido</h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 mb-1">Nombre</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Apellido</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Teléfono</label>
+            <input
+              type="tel"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={telefono}
+              onChange={(e) => setTelefono(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Dirección</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={direccion}
+              onChange={(e) => setDireccion(e.target.value)}
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label className="block text-gray-700 mb-1">Correo</label>
+            <input
+              type="email"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 mb-1">Canal de Venta</label>
+            <select
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={canalVenta}
+              onChange={(e) => setCanalVenta(parseInt(e.target.value))}
+              required
+            >
+              {canales.map((canal) => (
+                <option key={canal.id_canal} value={canal.id_canal}>
+                  {canal.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 mb-1">Estado</label>
+            <select
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={estado}
+              onChange={(e) => setEstado(e.target.value)}
+              required
+            >
+              <option value="Pendiente">Pendiente</option>
+              <option value="En proceso">En proceso</option>
+              <option value="Entregado">Entregado</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-rose-600 text-white py-3 rounded-full hover:bg-rose-700 transition-colors"
         >
-          {canales.map((canal) => (
-            <option key={canal.id_canal} value={canal.id_canal}>
-              {canal.nombre}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label>Estado:</label>
-        <select
-          className="bg-blue-50 w-full p-1"
-          value={estado}
-          onChange={(e) => setEstado(e.target.value)}
-          required
-        >
-          <option value="Pendiente">Pendiente</option>
-          <option value="En proceso">En proceso</option>
-          <option value="Entregado">Entregado</option>
-          <option value="Cancelado">Cancelado</option>
-        </select>
-      </div>
-      <button
-        type="submit"
-        className="bg-cyan-100 py-2 px-4 rounded hover:bg-cyan-200"
-      >
-        Registrar pedido
-      </button>
-    </form>
+          Registrar Pedido
+        </button>
+      </form>
+    </div>
   );
 }
 

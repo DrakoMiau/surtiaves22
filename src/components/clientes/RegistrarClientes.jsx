@@ -31,8 +31,7 @@ function RegistrarClientes() {
       }
 
       const data = await res.json();
-      console.log("Cliente creado:", data);
-      alert(`Cliente creado, ID: ${data.id}`);
+      alert(`✅ Cliente creado, ID: ${data.id}`);
 
       // Limpiar formulario
       setNombre("");
@@ -47,68 +46,72 @@ function RegistrarClientes() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 border rounded">
-      <h2 className="text-xl font-bold">Registrar Cliente</h2>
+    <div className="bg-yellow-50 p-6 rounded-lg shadow-md max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold text-rose-600 mb-6">Registrar Cliente</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 mb-1">Nombre</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Apellido</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)}
+            />
+          </div>
+        </div>
 
-      <div>
-        <label>Nombre:</label>
-        <input
-          type="text"
-          className="bg-blue-50 w-full p-1"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-        />
-      </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 mb-1">Teléfono</label>
+            <input
+              type="tel"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={telefono}
+              onChange={(e) => setTelefono(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Dirección</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+              value={direccion}
+              onChange={(e) => setDireccion(e.target.value)}
+            />
+          </div>
+        </div>
 
-      <div>
-        <label>Apellido:</label>
-        <input
-          type="text"
-          className="bg-blue-50 w-full p-1"
-          value={apellido}
-          onChange={(e) => setApellido(e.target.value)}
-        />
-      </div>
+        <div>
+          <label className="block text-gray-700 mb-1">Correo</label>
+          <input
+            type="email"
+            className="w-full p-3 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"
+            value={correo}
+            onChange={(e) => setCorreo(e.target.value)}
+          />
+        </div>
 
-      <div>
-        <label>Teléfono:</label>
-        <input
-          type="tel"
-          className="bg-blue-50 w-full p-1"
-          value={telefono}
-          onChange={(e) => setTelefono(e.target.value)}
-        />
-      </div>
-
-      <div>
-        <label>Dirección:</label>
-        <input
-          type="text"
-          className="bg-blue-50 w-full p-1"
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
-        />
-      </div>
-
-      <div>
-        <label>Correo:</label>
-        <input
-          type="email"
-          className="bg-blue-50 w-full p-1"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
-      >
-        Registrar Cliente
-      </button>
-    </form>
+        <button
+          type="submit"
+          className="w-full bg-rose-600 text-white py-3 rounded-full hover:bg-rose-700 transition-colors"
+        >
+          Crear Cliente
+        </button>
+      </form>
+    </div>
   );
 }
 
 export default RegistrarClientes;
+
