@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 function Modificar() {
@@ -84,4 +83,3 @@ function Modificar() {
 }
 
 export default Modificar;
-
