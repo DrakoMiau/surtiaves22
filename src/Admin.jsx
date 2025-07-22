@@ -1,5 +1,6 @@
-import Registrar from "./components/ventas/Modificar";
-import Modificar from "./components/ventas/Registrar";
+import Registrar from "./components/ventas/Registrar";
+import Modificar from "./components/ventas/Modificar";
+import ModificarClientes from "./components/clientes/ModificarClientes"
 import { useState } from "react";
 
 function Admin() {
@@ -16,6 +17,7 @@ function Admin() {
               Registrar venta
             </li>
             <li onClick={() => setVista("ver")}>Ver ventas</li>
+            <li onClick={() => setVista("verClientes")}>Ver clientes</li>
           </ul>
         </nav>
         <section className="flex-1 p-6 bg-gray-500">
@@ -23,6 +25,7 @@ function Admin() {
           {/*Recordar poner como estado inicial el nombre del cajer@ y su bienvenida*/}
           {vista === "registrar" && <Registrar />}
           {vista === "ver" && <Modificar />}
+          {vista === "verClientes" && <ModificarClientes />}
         </section>
       </div>
     </>

@@ -90,6 +90,48 @@ app.post("/clientes", async (req, res) => {
   }
 });
 
+// borrar clientes por id
+
+app.delete("/clientes/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM clientes WHERE id_cliente = ?"; // <-- "clientes"
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Error eliminando cliente:", err);
+      return res.status(500).json({ error: "Error eliminando cliente" });
+    }
+    res.json({ message: "Cliente eliminado correctamente" });
+  });
+});
+
+
+// actualizar clientes por id
+
+app.put("/clientes/:id", (req, res) => {
+  const id = req.params.id;
+  const { nombre, apellido, telefono, direccion, correo } = req.body;
+
+  const sql = `
+    UPDATE clientes
+    SET nombre = ?, apellido = ?, telefono = ?, direccion = ?, correo = ?
+    WHERE id_cliente = ?
+  `;
+
+  db.query(
+    sql,
+    [nombre, apellido, telefono, direccion, correo, id],
+    (err, result) => {
+      if (err) {
+        console.error("Error modificando cliente:", err);
+        return res.status(500).json({ error: "Error actualizando cliente" });
+      }
+      res.json({ message: "Cliente actualizado correctamente" });
+    },
+  );
+});
+
+
 app.listen(PORT, () => {
   console.log(`Servidor backend escuchando en http://localhost:${PORT}`);
 });
