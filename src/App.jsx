@@ -8,6 +8,7 @@ import Caja from "./Caja";
 import Admin from "./Admin";
 import Domiciliario from "./Domiciliario";
 import Cocina from "./Cocina";
+import Login from "./components/login/Login";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/domiciliario" element={<Domiciliario />} />
         <Route path="/cocina" element={<Cocina />} />
+        <Route path="/login/:rol" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

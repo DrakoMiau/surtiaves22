@@ -1,6 +1,7 @@
 import Registrar from "./components/ventas/Registrar";
 import Modificar from "./components/ventas/Modificar";
 import ModificarClientes from "./components/clientes/ModificarClientes"
+import RegistrarClientes from "./components/clientes/RegistrarClientes"
 import { useState } from "react";
 
 function Admin() {
@@ -18,6 +19,7 @@ function Admin() {
             </li>
             <li onClick={() => setVista("ver")}>Ver ventas</li>
             <li onClick={() => setVista("verClientes")}>Ver clientes</li>
+            <li onClick={() => setVista("registrarClientes")}>Registrar clientes</li>
           </ul>
         </nav>
         <section className="flex-1 p-6 bg-gray-500">
@@ -26,6 +28,7 @@ function Admin() {
           {vista === "registrar" && <Registrar />}
           {vista === "ver" && <Modificar />}
           {vista === "verClientes" && <ModificarClientes />}
+          {vista === "registrarClientes" && <RegistrarClientes />}
         </section>
       </div>
     </>

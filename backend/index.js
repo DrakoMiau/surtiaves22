@@ -8,7 +8,41 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-// GET all pedidos
+// --- LOGIN ---
+app.post("/login", async (req, res) => {
+  const { nombre_usuario, contrasena, rol } = req.body;
+  console.log("📥 [LOGIN] Body recibido:", req.body);
+
+  if (!nombre_usuario || !contrasena || !rol) {
+    return res.status(400).json({ error: "Faltan datos para autenticar" });
+  }
+
+  try {
+    const [rows] = await db.query(
+      `SELECT id_usuario, nombre_usuario, contrasena, rol
+       FROM usuarios
+       WHERE nombre_usuario = ? AND contrasena = ? AND rol = ?`,
+      [nombre_usuario, contrasena, rol],
+    );
+
+    console.log("🔍 [LOGIN] Resultado de la consulta:", rows);
+
+    if (rows.length === 0) {
+      return res
+        .status(401)
+        .json({ error: "Credenciales inválidas o rol incorrecto" });
+    }
+
+    return res.json({ success: true, usuario: rows[0] });
+  } catch (err) {
+    console.error("❌ [LOGIN] Error inesperado:", err);
+    return res
+      .status(500)
+      .json({ error: "Error interno al autenticar", detail: err.message });
+  }
+});
+
+// --- PEDIDOS ---
 app.get("/pedidos", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM pedidos");
@@ -19,7 +53,6 @@ app.get("/pedidos", async (req, res) => {
   }
 });
 
-// POST crear pedido
 app.post("/pedidos", async (req, res) => {
   const { cliente_id, canal_venta_id, estado } = req.body;
   try {
@@ -34,7 +67,6 @@ app.post("/pedidos", async (req, res) => {
   }
 });
 
-// PUT update pedido (actualiza estado)
 app.put("/pedidos/:id", async (req, res) => {
   const { id } = req.params;
   const { estado } = req.body;
@@ -50,7 +82,6 @@ app.put("/pedidos/:id", async (req, res) => {
   }
 });
 
-// DELETE un pedido
 app.delete("/pedidos/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -62,7 +93,7 @@ app.delete("/pedidos/:id", async (req, res) => {
   }
 });
 
-// GET clientes
+// --- CLIENTES ---
 app.get("/clientes", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM clientes");
@@ -73,11 +104,8 @@ app.get("/clientes", async (req, res) => {
   }
 });
 
-// POST nuevo cliente
-
 app.post("/clientes", async (req, res) => {
   const { nombre, apellido, telefono, direccion, correo } = req.body;
-
   try {
     const [result] = await db.query(
       "INSERT INTO clientes (nombre, apellido, telefono, direccion, correo) VALUES (?, ?, ?, ?, ?)",
@@ -90,47 +118,31 @@ app.post("/clientes", async (req, res) => {
   }
 });
 
-// borrar clientes por id
-
-app.delete("/clientes/:id", (req, res) => {
-  const id = req.params.id;
-  const sql = "DELETE FROM clientes WHERE id_cliente = ?"; // <-- "clientes"
-
-  db.query(sql, [id], (err, result) => {
-    if (err) {
-      console.error("Error eliminando cliente:", err);
-      return res.status(500).json({ error: "Error eliminando cliente" });
-    }
+app.delete("/clientes/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query("DELETE FROM clientes WHERE id_cliente = ?", [id]);
     res.json({ message: "Cliente eliminado correctamente" });
-  });
+  } catch (err) {
+    console.error("Error eliminando cliente:", err);
+    res.status(500).json({ error: "Error eliminando cliente" });
+  }
 });
 
-
-// actualizar clientes por id
-
-app.put("/clientes/:id", (req, res) => {
-  const id = req.params.id;
+app.put("/clientes/:id", async (req, res) => {
+  const { id } = req.params;
   const { nombre, apellido, telefono, direccion, correo } = req.body;
-
-  const sql = `
-    UPDATE clientes
-    SET nombre = ?, apellido = ?, telefono = ?, direccion = ?, correo = ?
-    WHERE id_cliente = ?
-  `;
-
-  db.query(
-    sql,
-    [nombre, apellido, telefono, direccion, correo, id],
-    (err, result) => {
-      if (err) {
-        console.error("Error modificando cliente:", err);
-        return res.status(500).json({ error: "Error actualizando cliente" });
-      }
-      res.json({ message: "Cliente actualizado correctamente" });
-    },
-  );
+  try {
+    await db.query(
+      `UPDATE clientes SET nombre = ?, apellido = ?, telefono = ?, direccion = ?, correo = ? WHERE id_cliente = ?`,
+      [nombre, apellido, telefono, direccion, correo, id],
+    );
+    res.json({ message: "Cliente actualizado correctamente" });
+  } catch (err) {
+    console.error("Error modificando cliente:", err);
+    res.status(500).json({ error: "Error actualizando cliente" });
+  }
 });
-
 
 app.listen(PORT, () => {
   console.log(`Servidor backend escuchando en http://localhost:${PORT}`);
