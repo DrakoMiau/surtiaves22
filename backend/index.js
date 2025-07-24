@@ -8,7 +8,7 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-// --- LOGIN ---
+// Login
 app.post("/login", async (req, res) => {
   const { nombre_usuario, contrasena, rol } = req.body;
   console.log("📥 [LOGIN] Body recibido:", req.body);
@@ -42,7 +42,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// --- PEDIDOS ---
+// pedidos 
 app.get("/pedidos", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM pedidos");
@@ -93,7 +93,7 @@ app.delete("/pedidos/:id", async (req, res) => {
   }
 });
 
-// --- CLIENTES ---
+// clientes
 app.get("/clientes", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM clientes");
@@ -141,6 +141,29 @@ app.put("/clientes/:id", async (req, res) => {
   } catch (err) {
     console.error("Error modificando cliente:", err);
     res.status(500).json({ error: "Error actualizando cliente" });
+  }
+});
+
+// filtrar pedidos
+app.get("/pedidos/estado/:estado", async (req, res) => {
+  const estado = req.params.estado;
+  try {
+    const [rows] = await db.query("CALL ObtenerPedidosPorEstado(?)", [estado]);
+    res.json(rows[0]); // El resultado está en rows[0] al usar CALL
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al obtener pedidos por estado" });
+  }
+});
+
+// total pedidos
+app.get("/pedidos/total", async (req, res) => {
+  try {
+    const [rows] = await db.query("CALL ContarPedidos()");
+    res.json(rows[0][0]); // Solo un resultado, acceder a la fila 0
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error al contar pedidos" });
   }
 });
 
